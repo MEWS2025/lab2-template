@@ -1,0 +1,16 @@
+{
+    "projectName": "Ceml",
+    "languages": [
+        {
+            "id": "ceml",
+            "grammar": "src/ceml.langium",
+            "fileExtensions": [
+                "ceml"
+            ],
+            "textMate": {
+                "out": "syntaxes/ceml.tmLanguage.json"
+            }
+        }
+    ],
+    "out": "src/generated"
+}

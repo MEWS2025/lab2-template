@@ -1,0 +1,264 @@
+CircularEconomy ViennaCircularEconomy {
+    components: [
+        Component C_CPU_0("CPU", ASSEMBLED)
+        Component C_OLEDDisplay_0("OLED Display", ASSEMBLED)
+        Component C_Keyboard_0("Keyboard", ASSEMBLED)
+        Component C_InkCartridge_0("Ink Cartridge", ASSEMBLED)
+        Component C_PaperTray_0("Paper Tray", ASSEMBLED)
+        Component C_Battery_0("Battery", ASSEMBLED)
+
+        Component C_CameraLens_0("Camera Lens", READY, recycled)
+        Component C_MemoryCard_0("Memory Card", READY, recycled)
+
+        Component C_CameraLens_1("Camera Lens", IN_CIRCULAR_PROCESS)
+        Component C_MemoryCard_1("Memory Card", IN_CIRCULAR_PROCESS)
+        
+        Component C_BikeFrame_0("Bike Frame", ASSEMBLED)
+        Component C_BikeWheels_0("Bike Wheels", ASSEMBLED)
+        Component C_BikeGears_0("Bike Gears", ASSEMBLED)
+
+        Component C_MobileCPU_0("Mobile CPU", ASSEMBLED)
+        Component C_MobileOLEDDisplay_0("Mobile OLED Display", ASSEMBLED)
+        Component C_MobilePhoneBattery_0("Mobile Phone Battery", ASSEMBLED)
+        
+    ]
+
+    products: [
+        Product P_Camera_0 {
+            productName: "Camera"
+            price: 499.99
+            assemblyDate: "2022-01-10"
+            retailer: MediaMarkt
+            components: [
+                C_CameraLens_0,
+                C_MemoryCard_0
+            ]
+        }
+        Product P_Camera_1 {
+            productName: "Camera"
+            assemblyDate: "2022-01-14"
+            retailer: MediaMarkt
+            price: 499.99
+            components: [
+                C_CameraLens_1,
+                C_MemoryCard_1
+            ]
+        }
+        Product P_Printer_0 {
+            price: 129.99
+            assemblyDate: "2022-01-27"
+            retailer: Saturn
+            productName: "Printer"
+            components: [
+                C_InkCartridge_0,
+                C_PaperTray_0
+            ]
+        }
+        Product P_Laptop_0 {
+            productName: "Laptop"
+            price: 1099.00
+            assemblyDate: "2022-02-13"
+            retailer: Saturn
+            components: [
+                C_CPU_0,
+                C_OLEDDisplay_0,
+                C_Keyboard_0,
+                C_Battery_0
+            ]
+        }
+        Product P_Bike_0 {
+            productName: "Bike"
+            price: 899.00
+            assemblyDate: "2022-02-01"
+            retailer: AnyBike
+            components: [
+                C_BikeFrame_0,
+                C_BikeWheels_0,
+                C_BikeGears_0
+            ]
+        }
+        Product P_MobilePhone_0 {
+            productName: "Mobile Phone"
+            price: 799.00
+            assemblyDate: "2022-03-17"
+            retailer: MediaMarkt
+            components: [
+                C_MobileCPU_0,
+                C_MobileOLEDDisplay_0,
+                C_MobilePhoneBattery_0
+            ]
+        }
+    ]
+
+    facilities: [
+        Facility ViennaElectronicsRecycleFacility (RECYCLE) {
+            goals: [
+                SDG_EnergySaved,
+                SDG_CO2Emission
+            ]
+        }
+        Facility StadtWienBikeRepairShop (REPAIR) {
+            goals: [
+                SDG_WaterSaved,
+                SDG_CO2Emission
+            ]
+        }
+        Facility ViennaRefurbishmentCenter (REFURBISH) {
+            goals: [
+                SDG_EnergySaved,
+                SDG_WaterSaved,
+                SDG_CO2Emission
+            ]
+        }
+    ]
+
+    goals: [
+        SustainabilityGoal SDG_EnergySaved {
+            description: "Minimum energy saved"
+            standard: 30
+            comparator: MIN
+        }
+        SustainabilityGoal SDG_WaterSaved {
+            description: "Minimum water saved"
+            standard: 300
+            comparator: MIN
+        }
+        SustainabilityGoal SDG_CO2Emission {
+            description: "Maximum CO2 Emission"
+            standard: 150
+            comparator: MAX
+        }
+    ]
+
+    actors: [
+        // Retailers
+        Retailer MediaMarkt
+        Retailer Saturn
+        Retailer AnyBike
+
+        // Manufacturers
+        Manufacturer AlpineOpticsAG {
+            components: [
+                C_CameraLens_0,
+                C_CameraLens_1,
+                C_MemoryCard_0,
+                C_MemoryCard_1
+            ]
+        }
+        Manufacturer DanubeDevicesGmbH {
+            components: [
+                C_CPU_0,
+                C_OLEDDisplay_0,
+                C_Keyboard_0,
+                C_InkCartridge_0,
+                C_PaperTray_0,
+                C_Battery_0
+            ]
+        }
+        Manufacturer CityCycleAG {
+            components: [
+                C_BikeFrame_0,
+                C_BikeWheels_0,
+                C_BikeGears_0
+            ]
+        }
+        Manufacturer MobileTechGmbH {
+            components: [
+                C_MobileCPU_0,
+                C_MobileOLEDDisplay_0,
+                C_MobilePhoneBattery_0
+            ]
+        }
+        
+        // Consumers
+        Consumer C1 {
+            orders: [
+                Order O1C1(P_Camera_0, "2022-05-15")
+            ]
+            returns: [
+                Return RO1C1 (order: O1C1) {    
+                    reason: "Product reached end of service life and is returned for component recovery."
+                    CircularProcess -> RecycleProcess RecycProc_RO1C1 {
+                        facility: ViennaElectronicsRecycleFacility
+                        energySavedKWh: 12.50
+                        waterSavedL: 250.00
+                        components: [
+                            C_CameraLens_0,
+                            C_MemoryCard_0
+                        ]
+                        shipment: RecycShipment_RO1C1 (delivered) {
+                            deliveryDate: "2025-10-01"
+                            co2Emission: 14.50
+                            destination: AlpineOpticsAG
+                        }
+                    }
+                }
+            ]
+        }
+        Consumer C2 {
+            orders: [
+                Order O1C2 (P_Laptop_0, "2023-03-02")
+                Order O2C2 (P_Printer_0, "2023-05-17")
+            ]
+            returns: []
+        }
+        Consumer C3 {
+            orders: [
+                Order O1C3 (P_Bike_0, "2023-07-04" )
+            ]
+            returns: [
+                Return RO1C3 (order: O1C3) {
+                    reason: "Returned for technical repair and performance restoration."
+                    CircularProcess -> RepairProcess RepProc_RO1C3 {
+                        facility: StadtWienBikeRepairShop
+                        energySavedKWh: 25.00
+                        waterSavedL: 500.00
+                        shipment: RepShipment_RO1C3 (delivered) {
+                            deliveryDate: "2025-09-21"
+                            co2Emission: 22.0
+                            destination: CityCycleAG
+                        }
+                    }
+                }
+            ]
+        }
+        Consumer C4 {
+            orders: [
+                Order O1C4 (P_Camera_1, "2022-05-17")
+                Order O2C4 (P_MobilePhone_0, "2022-07-07")
+            ]
+            returns: [
+                Return RO1C4 (order: O1C4) {
+                    reason: "Product reached end of service life and is returned for component recovery."
+                    CircularProcess -> RecycleProcess RecycProc_RO1C4 {
+                        facility: ViennaElectronicsRecycleFacility
+                        energySavedKWh: 12.50
+                        waterSavedL: 250.00
+                        components: [
+                            C_CameraLens_1,
+                            C_MemoryCard_1
+                        ]
+                        shipment: RecycShipment_RO1C4 {
+                            deliveryDate: "2025-11-25"
+                            co2Emission: 14.50
+                            destination: AlpineOpticsAG
+                        }
+                    }
+                }
+                Return RO2C4 (order: O2C4) {
+                    reason: "Returned for functional inspection and quality refurbishment to extend its lifecycle."
+                    CircularProcess -> RefurbishProcess RefProc_RO2C4 {
+                        facility: ViennaRefurbishmentCenter
+                        energySavedKWh: 18.75
+                        waterSavedL: 260.00
+                        shipment: RefurbShipment_RO2C4 (delivered) {
+                            deliveryDate: "2025-06-18"
+                            co2Emission: 12.0
+                            destination: MobileTechGmbH
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
