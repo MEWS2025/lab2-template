@@ -1,7 +1,3 @@
-Here’s a concise and clean **README.md** you can put at the root of your `lab2-template` folder 👇
-
----
-
 ## 🧩 Lab 2 — Graphical & Textual Concrete Syntax Development
 
 This lab focuses on exploring **two complementary approaches** to defining *concrete syntaxes* for domain models:
@@ -16,7 +12,7 @@ This lab focuses on exploring **two complementary approaches** to defining *conc
 
    * Build a language grammar for your metamodel.
    * Automatically generate a VS Code extension for textual editing.
-   * The textual syntax allows users to model through structured DSLs.
+   * The textual syntax allows users to model through a DSL.
 
 ---
 
