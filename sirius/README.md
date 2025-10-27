@@ -31,7 +31,6 @@ You can easily share database states with teammates by exporting and re-importin
      │   ├─ sirius-db-seed.tar.gz
      └─ langium/
    ```
-
 ---
 
 ### 🌐 3. Clone the Sirius Web Source
@@ -49,6 +48,18 @@ git clone git@github.com:eclipse-sirius/sirius-web.git
 Download the prebuilt `sirius-web` JAR from the link below and place it inside the `sirius` folder:
 
 👉 [Download JAR (sirius-web-*-.jar from the Assets on the side, the * would be some date)](https://github.com/eclipse-sirius/sirius-web/packages/2069582)
+
+
+<img width="970" height="907" alt="sirius-web-jar-view" src="https://github.com/user-attachments/assets/bd792b89-2b0b-4de4-a95f-ca4b73a8b103" />
+
+
+In case the link is broken, follow these steps - 
+1. Go to [`Packages`](https://github.com/orgs/eclipse-sirius/packages?tab=packages&q=sirius-web) of the Sirius web repo.
+2. Search for `sirius-web`
+3. Select the package `org.eclipse.sirius.sirius-web` as given in the image below.
+
+<img width="981" height="108" alt="sirius-web-package" src="https://github.com/user-attachments/assets/5b0f4b08-9ad2-45bc-837e-1343f719a31f" />
+
 
 After downloading, the structure should look like:
 
