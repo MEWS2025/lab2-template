@@ -48,7 +48,7 @@ git clone git@github.com:eclipse-sirius/sirius-web.git
 
 Download the prebuilt `sirius-web` JAR from the link below and place it inside the `sirius` folder:
 
-👉 [Download JAR](https://github-registry-files.githubusercontent.com/117671057/6e64a700-b0d8-11f0-8ded-84193d7ef5ce?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20251026%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20251026T044206Z&X-Amz-Expires=300&X-Amz-Signature=1aa98d598e9f927ae9776bfc104b800adeb634d0260eeef63a088ede43410f08&X-Amz-SignedHeaders=host&response-content-disposition=filename%3Dsirius-web-2025.10.1.jar.md5&response-content-type=application%2Foctet-stream)
+👉 [Download JAR (sirius-web-*-.jar from the Assets on the side, the * would be some date)](https://github.com/eclipse-sirius/sirius-web/packages/2069582)
 
 After downloading, the structure should look like:
 
