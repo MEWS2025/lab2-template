@@ -57,6 +57,7 @@ In case the link is broken, follow these steps -
 1. Go to [`Packages`](https://github.com/orgs/eclipse-sirius/packages?tab=packages&q=sirius-web) of the Sirius web repo.
 2. Search for `sirius-web`
 3. Select the package `org.eclipse.sirius.sirius-web` as given in the image below.
+4. Renamed the downloaded jar to `sirius-web.jar`.
 
 <img width="981" height="108" alt="sirius-web-package" src="https://github.com/user-attachments/assets/5b0f4b08-9ad2-45bc-837e-1343f719a31f" />
 
@@ -71,7 +72,7 @@ lab2-template/
   │   ├─ save_state.sh
   │   ├─ sirius-db-seed.tar.gz
   │   ├─ sirius-web/
-  │   └─ sirius-web-2025.10.1.jar
+  │   └─ sirius-web.jar
   └─ langium/
 ```
 
