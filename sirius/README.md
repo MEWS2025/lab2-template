@@ -96,7 +96,7 @@ To start **PostgreSQL** with the preloaded data and automatically run **Sirius W
 bash load_db_data_and_run.sh
 ```
 
-#### In Windows PowerShell
+#### In Windows Command Prompt
 ```cmd
 load_db_data_and_run.cmd
 ```
@@ -124,7 +124,7 @@ Whenever you’ve made changes and want to persist the new DB state to send it t
 bash save_state.sh
 ```
 
-#### In Windows PowerShell
+#### In Windows Command Prompt
 ```cmd
 save_state.cmd
 ```
@@ -150,7 +150,7 @@ To reload a specific saved snapshot:
 bash load_db_data_and_run.sh sirius-db-seed-2025-10-26_10-30-00.tar.gz
 ```
 
-#### In Windows PowerShell
+#### In Windows Command Prompt
 ```cmd
 load_db_data_and_run.sh sirius-db-seed-2025-10-26_10-30-00.tar.gz
 ```
