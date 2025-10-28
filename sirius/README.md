@@ -41,6 +41,13 @@ Clone the official Sirius Web repository into the `sirius` folder:
 git clone git@github.com:eclipse-sirius/sirius-web.git
 ```
 
+#### Windows Long Paths Issue
+Note: In windows on cloning the repository, you might face issues with long file paths. To avoid this, you can enable long paths in Git by running the following command in your command prompt by opening it with administrator privileges to allow long paths:
+
+```cmd
+reg add "HKLM\SYSTEM\CurrentControlSet\Control\FileSystem" /v LongPathsEnabled /t REG_DWORD /d 1 /f
+```
+
 ---
 
 ### 📦 4. Download the Application JAR
@@ -80,11 +87,20 @@ lab2-template/
 
 ### ⚙️ 5. Running Sirius Web
 
+
 To start **PostgreSQL** with the preloaded data and automatically run **Sirius Web**, simply execute:
 
+
+#### In Linux/MacOS Terminal
 ```bash
 bash load_db_data_and_run.sh
 ```
+
+#### In Windows PowerShell
+```cmd
+load_db_data_and_run.cmd
+```
+
 
 * This:
 
@@ -101,10 +117,16 @@ Once it’s ready, you can open **Sirius Web** in your browser at:
 
 ### 💾 6. Saving the Current Database State
 
-Whenever you’ve made changes and want to persist the new DB state, run:
+Whenever you’ve made changes and want to persist the new DB state to send it to your teammate, In a new `terminal/cmd` run:
 
+#### In Linux/MacOS Terminal
 ```bash
 bash save_state.sh
+```
+
+#### In Windows PowerShell
+```cmd
+save_state.cmd
 ```
 
 This will:
@@ -119,21 +141,31 @@ You can commit and push this `.tar.gz` file to your Git repository to share it w
 
 ### ♻️ 7. Loading a Specific Saved State
 
+Once you have a specific saved snapshot (e.g. from a teammate), you should stop the existing running process in terminal/cmd using CTRL+C and then load the saved snapshot by providing the filename as an argument to `load_db_data_and_run.sh`:
+
+#### In Linux/MacOS Terminal
 To reload a specific saved snapshot:
 
 ```bash
 bash load_db_data_and_run.sh sirius-db-seed-2025-10-26_10-30-00.tar.gz
 ```
 
-If you omit the argument:
-
-```bash
-bash load_db_data_and_run.sh
+#### In Windows PowerShell
+```cmd
+load_db_data_and_run.sh sirius-db-seed-2025-10-26_10-30-00.tar.gz
 ```
+
+If you omit the argument:
 
 …it will automatically use the default `sirius-db-seed.tar.gz`.
 
 ---
+
+### How to Use This Setup
+
+You do not need to keep saving the DB state after every small change. You only need to save it when you want to share a specific state with your teammates.
+The load_db_data_and_run script will reload the most saved state.
+
 
 ### 🧠 Summary
 

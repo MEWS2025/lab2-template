@@ -19,8 +19,8 @@ where docker >nul 2>nul || (echo [ERROR] docker not found in PATH & exit /b 1)
 where tar    >nul 2>nul || (echo [ERROR] tar.exe not found; on Win10/11 it is built-in. & exit /b 1)
 
 rem ----- Timestamp (locale-proof) -----
-for /f "tokens=2 delims==" %%a in ('wmic os get localdatetime /value') do set "datetime=%%a"
-set "TIMESTAMP=%datetime:~0,4%-%datetime:~4,2%-%datetime:~6,2%_%datetime:~8,2%-%datetime:~10,2%-%datetime:~12,2%"
+rem --- Get ISO-style timestamp (yyyyMMdd_HHmmss) using PowerShell ---
+for /f %%a in ('powershell -NoProfile -Command "Get-Date -Format yyyyMMdd_HHmmss"') do set "TIMESTAMP=%%a"
 
 rem ----- Paths in CURRENT DIR -----
 set "WORKDIR=%cd%"
