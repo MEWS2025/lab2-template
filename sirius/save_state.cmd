@@ -17,9 +17,9 @@ rem -----------------------------------
 rem ----- Preconditions -----
 where docker >nul 2>nul || (echo [ERROR] docker not found in PATH & exit /b 1)
 where tar    >nul 2>nul || (echo [ERROR] tar.exe not found; on Win10/11 it is built-in. & exit /b 1)
+where powershell >nul 2>nul || (echo [ERROR] PowerShell required. & exit /b 1)
 
 rem ----- Timestamp (locale-proof) -----
-rem --- Get ISO-style timestamp (yyyyMMdd_HHmmss) using PowerShell ---
 for /f %%a in ('powershell -NoProfile -Command "Get-Date -Format yyyyMMdd_HHmmss"') do set "TIMESTAMP=%%a"
 
 rem ----- Paths in CURRENT DIR -----
@@ -50,7 +50,7 @@ if errorlevel 1 (
 copy /y "%WORKDIR%\seed.dump" "%INIT_DIR%\15-seed.dump" >nul
 del /q "%WORKDIR%\seed.dump" >nul 2>nul
 
-rem ----- init restore script (runs inside container at first init) -----
+rem ----- init restore script (.cmd) -----
 (
   echo @echo off
   echo setlocal
@@ -60,6 +60,17 @@ rem ----- init restore script (runs inside container at first init) -----
   echo echo Restore complete.
   echo endlocal
 ) > "%INIT_DIR%\16-restore.cmd"
+
+rem ----- init restore script (.sh, LF endings) -----
+powershell -NoProfile -Command ^
+  "$text=@' ^
+#!/bin/sh
+set -e
+echo ""Restoring seed into ${POSTGRES_DB} ...""
+pg_restore -U ""${POSTGRES_USER}"" -d ""${POSTGRES_DB}"" --no-owner --no-privileges /docker-entrypoint-initdb.d/15-seed.dump
+echo ""Restore complete.""
+'@; ^
+$text -replace \"`r?`n\",\"`n\" | Set-Content -NoNewline -Encoding utf8 '%INIT_DIR%\16-restore.sh'"
 
 rem ----- run_with_seed.cmd for friends -----
 (
@@ -93,6 +104,37 @@ rem ----- run_with_seed.cmd for friends -----
   echo endlocal
 ) > "%BUNDLE_ROOT%\run_with_seed.cmd"
 
+rem ----- run_with_seed.sh (LF endings) -----
+powershell -NoProfile -Command ^
+  "$text=@' ^
+#!/usr/bin/env bash
+set -e
+CONTAINER_NAME=""sirius-web-postgres-seeded""
+IMAGE=""postgres:%PG_MAJOR%""
+PORT=""%PORT_FOR_FRIENDS%""
+DB_USER=""%DB_USER%""
+DB_PASS=""dbpwd""
+DB_NAME=""%DB_NAME%""
+SCRIPT_DIR=""$(cd ""$(dirname ""${BASH_SOURCE[0]}"")"" && pwd)""
+INIT_DIR=""${SCRIPT_DIR}/init""
+echo ""Pulling ${IMAGE}...""
+docker pull ""${IMAGE}""
+docker rm -f ""${CONTAINER_NAME}"" 2>/dev/null || true
+echo ""Starting seeded Postgres on port ${PORT} ...""
+docker run -p ${PORT}:5432 --rm --name ""${CONTAINER_NAME}"" \
+  -e POSTGRES_USER=""${DB_USER}"" \
+  -e POSTGRES_PASSWORD=""${DB_PASS}"" \
+  -e POSTGRES_DB=""${DB_NAME}"" \
+  -v ""${INIT_DIR}"":/docker-entrypoint-initdb.d:ro \
+  -d ""${IMAGE}""
+echo ""Waiting for Postgres...""
+until docker exec ""${CONTAINER_NAME}"" pg_isready -U ""${DB_USER}"" -d ""${DB_NAME}"" >/dev/null 2>&1; do
+  sleep 1
+done
+echo ""✅ Postgres ready at jdbc:postgresql://localhost:${PORT}/${DB_NAME}""
+'@; ^
+$text -replace \"`r?`n\",\"`n\" | Set-Content -NoNewline -Encoding utf8 '%BUNDLE_ROOT%\run_with_seed.sh'"
+  
 rem ----- README -----
 (
   echo # %BUNDLE_DIR%
@@ -100,7 +142,9 @@ rem ----- README -----
   echo Portable snapshot of Postgres %PG_MAJOR% from container "%CONTAINER_NAME%".
   echo.
   echo ## Quick start
-  echo run_with_seed.cmd
+  echo.
+  echo Linux/macOS: run_with_seed.sh
+  echo Windows:     run_with_seed.cmd
   echo.
   echo Port: %PORT_FOR_FRIENDS%
   echo JDBC: jdbc:postgresql://localhost:%PORT_FOR_FRIENDS%/%DB_NAME%
