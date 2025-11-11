@@ -25,7 +25,9 @@ docker exec -t "$CONTAINER_NAME" \
   pg_dump -U "$DB_USER" -d "$DB_NAME" -F c -f /tmp/seed.dump
 
 # 2) Copy dump to host
-docker cp "${CONTAINER_NAME}:/tmp/seed.dump" "${INIT_DIR}/seed.dump"
+docker exec "${CONTAINER_NAME}" \
+  pg_dump -U "${DB_USER}" -d "${DB_NAME}" -F c > "${INIT_DIR}/seed.dump"
+
 
 # 3) Create restore script for Linux/macOS (auto-runs in Postgres image)
 cat > "${INIT_DIR}/restore.sh" <<'EOF'
