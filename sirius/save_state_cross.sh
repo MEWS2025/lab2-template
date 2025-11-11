@@ -21,8 +21,8 @@ mkdir -p "${INIT_DIR}"
 
 # 1) Dump database
 echo "🧪 Dumping DB from container '${CONTAINER_NAME}' ..."
-docker exec -t "$CONTAINER_NAME" \
-  pg_dump -U "$DB_USER" -d "$DB_NAME" -F c -f /tmp/seed.dump
+# docker exec -t "$CONTAINER_NAME" \
+#   pg_dump -U "$DB_USER" -d "$DB_NAME" -F c -f /tmp/seed.dump
 
 # 2) Copy dump to host
 docker exec "${CONTAINER_NAME}" \
